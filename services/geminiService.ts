@@ -1,20 +1,41 @@
 import { GoogleGenAI } from "@google/genai";
 import { AI_SYSTEM_INSTRUCTION } from '../constants';
 
-const apiKey = process.env.API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
+// Safely retrieve API key without crashing if process is undefined
+const getApiKey = () => {
+  try {
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env.API_KEY || '';
+    }
+  } catch (e) {
+    console.warn("Environment access failed", e);
+  }
+  return '';
+};
+
+const apiKey = getApiKey();
+
+// Only initialize AI if key is present to avoid immediate errors
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.error("Failed to initialize GoogleGenAI", e);
+  }
+}
 
 export const generateChatResponse = async (
   message: string,
   history: { role: string; parts: { text: string }[] }[]
 ): Promise<string> => {
-  if (!apiKey) {
-    return "I'm sorry, I'm currently offline (API Key missing). Please email Momen directly!";
+  if (!apiKey || !ai) {
+    return "I'm sorry, I'm currently offline (API Key missing or invalid). Please email Momen directly!";
   }
 
   try {
     const chat = ai.chats.create({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-1.5-flash', // Fallback to a known stable model name for this context if preview fails
       config: {
         systemInstruction: AI_SYSTEM_INSTRUCTION,
       },

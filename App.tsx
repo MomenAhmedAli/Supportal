@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  Github, 
   Linkedin, 
   Twitter, 
   Mail, 
@@ -12,11 +11,27 @@ import {
   Image as ImageIcon, 
   PenTool,
   Menu,
-  X
+  X,
+  Gamepad2,
+  Users,
+  CreditCard,
+  Gem,
+  Github
 } from 'lucide-react';
 import AIChat from './components/AIChat';
-import { PERSONAL_INFO, SERVICES, PROJECTS, FREE_ASSETS, REVIEWS } from './constants';
-import { AvailabilityStatus } from './types';
+import { PERSONAL_INFO, SERVICES, PROJECTS, FREE_ASSETS, REVIEWS, PRICING_PLANS } from './constants';
+
+// Custom Discord Icon Component since Lucide doesn't have the brand icon
+const DiscordIcon = ({ className }: { className?: string }) => (
+  <svg 
+    className={className} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>
+  </svg>
+);
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -51,6 +66,7 @@ function App() {
               <div className="ml-10 flex items-baseline space-x-8">
                 <a href="#about" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">About</a>
                 <a href="#services" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Services</a>
+                <a href="#pricing" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
                 <a href="#projects" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Work</a>
                 <a href="#assets" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Assets</a>
                 <a href="#reviews" className="hover:text-brand-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Reviews</a>
@@ -72,7 +88,7 @@ function App() {
         {isMenuOpen && (
           <div className="md:hidden bg-dark-900 border-b border-white/5">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {['About', 'Services', 'Projects', 'Assets', 'Reviews'].map((item) => (
+              {['About', 'Services', 'Pricing', 'Projects', 'Assets', 'Reviews'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
@@ -103,7 +119,7 @@ function App() {
               </div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
                 Creative <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-500">Artist</span> &<br />
-                UI <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-500">Developer</span>
+                Roblox UI <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-500">Designer</span>
               </h1>
               <p className="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
                 {PERSONAL_INFO.bio}
@@ -111,11 +127,13 @@ function App() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <a 
-                  href="#contact"
-                  className="px-8 py-4 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-500 transition-all shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2"
+                  href={PERSONAL_INFO.discord}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 rounded-xl bg-[#5865F2] text-white font-semibold hover:bg-[#4752C4] transition-all shadow-lg shadow-[#5865F2]/25 flex items-center justify-center gap-2"
                 >
-                  <Mail size={20} />
-                  Contact Me
+                  <DiscordIcon className="w-5 h-5" />
+                  Contact on Discord
                 </a>
                 <a 
                   href={PERSONAL_INFO.github}
@@ -124,7 +142,7 @@ function App() {
                   className="px-8 py-4 rounded-xl bg-slate-800 text-white font-semibold hover:bg-slate-700 transition-all border border-slate-700 flex items-center justify-center gap-2"
                 >
                   <Github size={20} />
-                  GitHub Profile
+                  GitHub
                 </a>
               </div>
             </div>
@@ -133,7 +151,7 @@ function App() {
               <div className="relative w-72 h-72 md:w-96 md:h-96 mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-tr from-brand-500 to-purple-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
                 <img 
-                  src="https://picsum.photos/400/400?grayscale" 
+                  src={PERSONAL_INFO.profileImage}
                   alt={PERSONAL_INFO.name}
                   className="relative w-full h-full object-cover rounded-full border-4 border-slate-800 shadow-2xl"
                 />
@@ -144,8 +162,8 @@ function App() {
                     <Code2 size={24} />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white">React & TS</div>
-                    <div className="text-xs text-slate-400">Expert Level</div>
+                    <div className="text-sm font-semibold text-white">Software Engineer</div>
+                    <div className="text-xs text-slate-400">CS Graduate</div>
                   </div>
                 </div>
               </div>
@@ -153,45 +171,33 @@ function App() {
           </div>
         </section>
 
-        {/* GitHub Stats / Connector Section */}
+        {/* Discord / Community Section */}
         <section className="py-12 bg-dark-900/50 border-y border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p className="text-slate-400 mb-6">Connected Repositories & Activity</p>
+                <p className="text-slate-400 mb-6">Join my community & Get Support</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-dark-800 p-6 rounded-xl border border-white/5 hover:border-brand-500/50 transition-colors group cursor-pointer">
+                    <a href={PERSONAL_INFO.discord} target="_blank" rel="noopener noreferrer" className="bg-[#5865F2]/10 p-6 rounded-xl border border-[#5865F2]/20 hover:border-[#5865F2] transition-colors group cursor-pointer">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2 text-slate-300 group-hover:text-white">
-                                <Github size={20} />
-                                <span className="font-semibold">portfolio-v1</span>
+                                <DiscordIcon className="w-5 h-5 text-[#5865F2]" />
+                                <span className="font-semibold text-[#5865F2]">Join Server</span>
                             </div>
-                            <span className="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300">Public</span>
+                            <span className="text-xs bg-[#5865F2]/20 px-2 py-1 rounded-full text-[#5865F2]">Active</span>
                         </div>
-                        <p className="text-sm text-slate-500 text-left mb-4">The source code for this portfolio website using React and Tailwind.</p>
-                        <div className="flex items-center gap-4 text-xs text-slate-400">
-                            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-yellow-400"></div> TypeScript</span>
-                            <span>★ 12</span>
-                            <span>Updated 2 days ago</span>
-                        </div>
-                    </div>
-                     <div className="bg-dark-800 p-6 rounded-xl border border-white/5 hover:border-brand-500/50 transition-colors group cursor-pointer">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2 text-slate-300 group-hover:text-white">
-                                <Github size={20} />
-                                <span className="font-semibold">react-ui-kit</span>
+                        <p className="text-sm text-slate-400 text-left mb-4">Connect directly for commissions, support, and free assets.</p>
+                    </a>
+                    <div className="bg-dark-800 p-6 rounded-xl border border-white/5 hover:border-brand-500/50 transition-colors">
+                         <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2 text-slate-300">
+                                <Users size={20} />
+                                <span className="font-semibold">Happy Clients</span>
                             </div>
-                            <span className="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300">Public</span>
                         </div>
-                        <p className="text-sm text-slate-500 text-left mb-4">A reusable component library for modern web applications.</p>
-                        <div className="flex items-center gap-4 text-xs text-slate-400">
-                            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-blue-400"></div> React</span>
-                            <span>★ 45</span>
-                            <span>Updated 1 week ago</span>
-                        </div>
+                        <p className="text-sm text-slate-500 text-left mb-4">Over 50+ satisfied clients on Discord and Roblox.</p>
                     </div>
                     <div className="bg-dark-800 p-6 rounded-xl border border-white/5 hover:border-brand-500/50 transition-colors flex flex-col items-center justify-center text-center">
-                        <h3 className="text-xl font-bold text-white mb-2">150+</h3>
-                        <p className="text-slate-400 text-sm">Total Contributions this year</p>
-                        <a href={PERSONAL_INFO.github} className="mt-4 text-brand-400 text-sm hover:underline">View GitHub Profile &rarr;</a>
+                        <h3 className="text-xl font-bold text-white mb-2">CS Graduate</h3>
+                        <p className="text-slate-400 text-sm">Specialized in Software Engineering</p>
                     </div>
                 </div>
             </div>
@@ -201,7 +207,7 @@ function App() {
         <section id="services" className="py-24 bg-dark-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Services & Pricing</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Services</h2>
               <p className="text-slate-400 max-w-2xl mx-auto">High-quality design and development solutions tailored to your needs.</p>
             </div>
 
@@ -213,7 +219,6 @@ function App() {
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
                   <p className="text-slate-400 text-sm mb-4 h-10">{service.description}</p>
-                  <div className="text-2xl font-bold text-white mb-6">{service.price}</div>
                   <ul className="space-y-3 mb-6">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-2 text-sm text-slate-300">
@@ -222,24 +227,82 @@ function App() {
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full py-2.5 rounded-lg border border-brand-500/30 text-brand-400 hover:bg-brand-500 hover:text-white transition-all text-sm font-medium">
-                    Get Started
-                  </button>
+                  <a 
+                    href={PERSONAL_INFO.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center py-2.5 rounded-lg border border-brand-500/30 text-brand-400 hover:bg-brand-500 hover:text-white transition-all text-sm font-medium"
+                  >
+                    View Pricing
+                  </a>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* Pricing Section - NEW */}
+        <section id="pricing" className="py-24 bg-dark-900/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Pricing Plans</h2>
+              <p className="text-slate-400 max-w-2xl mx-auto">Transparent pricing for UI frames and assets. Robux and USD accepted.</p>
+            </div>
+
+            {PRICING_PLANS.map((planCategory, catIdx) => (
+              <div key={catIdx} className="mb-20 last:mb-0">
+                <h3 className="text-2xl font-bold text-white mb-8 border-l-4 border-brand-500 pl-4">{planCategory.category}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {planCategory.items.map((item, itemIdx) => (
+                    <div key={itemIdx} className="flex flex-col bg-dark-800 rounded-2xl p-8 border border-white/5 hover:border-brand-500/50 transition-all hover:-translate-y-1 relative overflow-hidden group">
+                      {item.title === 'Premium' && (
+                         <div className="absolute top-0 right-0 bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                      )}
+                      <div className="mb-4">
+                        <h4 className="text-xl font-bold text-white">{item.title}</h4>
+                        <p className="text-slate-400 text-sm">{item.unit}</p>
+                      </div>
+                      <div className="flex items-baseline gap-1 mb-1">
+                        <span className="text-3xl font-bold text-white">{item.price}</span>
+                        <span className="text-slate-500 text-sm">USD</span>
+                      </div>
+                      <div className="flex items-center gap-1 mb-6 text-brand-400 text-sm font-medium">
+                        <Gem size={14} />
+                        {item.robux}
+                      </div>
+                      <ul className="space-y-4 mb-8 flex-1">
+                        {item.features.map((feature, fIdx) => (
+                          <li key={fIdx} className="flex items-start gap-3 text-slate-300 text-sm">
+                            <CheckCircle2 size={16} className="text-green-500 shrink-0 mt-0.5" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <a 
+                        href={PERSONAL_INFO.discord}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 rounded-xl bg-slate-700 text-white font-medium hover:bg-brand-600 transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-brand-500/20"
+                      >
+                        Order Now <CreditCard size={16} />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Projects Section */}
-        <section id="projects" className="py-24 bg-dark-900/50">
+        <section id="projects" className="py-24 bg-dark-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Recent Projects</h2>
                 <p className="text-slate-400">A selection of my latest design and development work.</p>
               </div>
-              <a href="#" className="text-brand-400 hover:text-brand-300 flex items-center gap-1">
+              <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" className="text-brand-400 hover:text-brand-300 flex items-center gap-1">
                 View All <ExternalLink size={16} />
               </a>
             </div>
@@ -270,7 +333,7 @@ function App() {
         </section>
 
         {/* Free Assets Section */}
-        <section id="assets" className="py-24 bg-dark-950">
+        <section id="assets" className="py-24 bg-dark-900/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Free Assets</h2>
@@ -292,9 +355,14 @@ function App() {
                       <span className="text-xs text-slate-500 flex items-center gap-1">
                         <Download size={14} /> {asset.downloadCount} downloads
                       </span>
-                      <button className="text-sm text-brand-400 hover:text-white font-medium transition-colors">
-                        Download
-                      </button>
+                      <a 
+                        href={PERSONAL_INFO.discord}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-brand-400 hover:text-white font-medium transition-colors"
+                      >
+                        Download on Discord
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -304,24 +372,33 @@ function App() {
         </section>
 
         {/* Reviews Section */}
-        <section id="reviews" className="py-24 bg-dark-900/50">
+        <section id="reviews" className="py-24 bg-dark-950">
            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
              <h2 className="text-3xl font-bold text-white mb-12 text-center">Client Reviews</h2>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+             <div className="grid grid-cols-1 gap-8">
                {REVIEWS.map((review) => (
-                 <div key={review.id} className="bg-dark-800 p-8 rounded-2xl border border-white/5 relative">
-                   <div className="flex items-center gap-4 mb-6">
-                     <img src={review.avatar} alt={review.name} className="w-12 h-12 rounded-full object-cover" />
-                     <div>
-                       <h4 className="font-semibold text-white">{review.name}</h4>
-                       <p className="text-sm text-slate-400">{review.role}</p>
+                 <div key={review.id} className="bg-dark-900 p-8 rounded-2xl border border-white/5 relative hover:border-brand-500/20 transition-colors">
+                   <div className="flex flex-col sm:flex-row gap-6">
+                     <div className="shrink-0">
+                        <img src={review.avatar} alt={review.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-700" />
                      </div>
-                   </div>
-                   <p className="text-slate-300 italic">"{review.content}"</p>
-                   <div className="flex gap-1 mt-4 text-yellow-500">
-                     {[...Array(review.rating)].map((_, i) => (
-                       <span key={i}>★</span>
-                     ))}
+                     <div className="flex-1">
+                       <div className="flex items-center justify-between mb-2">
+                         <div>
+                            <h4 className="font-bold text-white text-lg">{review.name}</h4>
+                            <p className="text-sm text-brand-400">{review.role}</p>
+                         </div>
+                         <div className="flex gap-1 text-yellow-500">
+                           {[...Array(review.rating)].map((_, i) => (
+                             <span key={i} className="text-sm">★</span>
+                           ))}
+                         </div>
+                       </div>
+                       <div className="relative">
+                          <span className="absolute -top-2 -left-2 text-4xl text-slate-700 font-serif leading-none">"</span>
+                          <p className="text-slate-300 italic leading-relaxed pl-4">{review.content}</p>
+                       </div>
+                     </div>
                    </div>
                  </div>
                ))}
@@ -334,13 +411,16 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
              <h2 className="text-2xl font-bold text-white mb-8">Ready to start a project?</h2>
              <div className="flex justify-center gap-6 mb-12">
-               <a href="#" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-brand-600 transition-all">
+               <a href={PERSONAL_INFO.discord} target="_blank" rel="noopener noreferrer" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-[#5865F2] transition-all" aria-label="Discord">
+                 <DiscordIcon className="w-5 h-5" />
+               </a>
+               <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 transition-all" aria-label="GitHub">
                  <Github size={20} />
                </a>
-               <a href="#" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-blue-600 transition-all">
+               <a href="#" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-blue-600 transition-all" aria-label="LinkedIn">
                  <Linkedin size={20} />
                </a>
-               <a href="#" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-sky-500 transition-all">
+               <a href="#" className="p-3 bg-dark-800 rounded-full text-slate-400 hover:text-white hover:bg-sky-500 transition-all" aria-label="Twitter">
                  <Twitter size={20} />
                </a>
              </div>
